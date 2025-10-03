@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Educational Phishing Demo — NOT REAL</title>
+<style>
+  :root{
+    --bg:#f6f8fb;
+    --card:#fff;
+    --accent:#1a73e8;
+    --danger:#d97706;
+    --muted:#556;
+    --panel:#0f1724;
+  }
+  html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;background:linear-gradient(#f6f8fb,#eef3f9);color:#111}
+  .viewport{max-width:420px;margin:18px auto;padding-bottom:80px}
+  .container{
+    background:var(--card); border-radius:12px; box-shadow:0 18px 40px rgba(10,20,40,0.08);
+    padding:22px; overflow:hidden;
+  }
+
+  /* educational banner */
+  .edu-banner{
+    display:flex; gap:12px; align-items:flex-start;
+    background:#fff4d9; border:1px solid rgba(217,144,0,0.15);
+    padding:12px;border-radius:8px;margin-bottom:18px;
+  }
+  .edu-banner strong{color: #b45309; font-weight:800}
+  .edu-banner p{margin:0;color:var(--muted);font-size:13px}
+
+  /* brand row */
+  .brand{
+    text-align:center;margin:12px 0 6px 0;
+  }
+  .brand-logo{
+    display:inline-block; font-weight:800; font-size:28px; letter-spacing:2px;
+    color:var(--accent);
+  }
+  .brand-sub{color:var(--muted); font-size:14px;margin-top:6px}
+
+  /* form */
+  form{margin-top:10px}
+  .field{margin:14px 0}
+  label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
+  input[type="text"], input[type="password"]{
+    width:100%; padding:12px 14px;border-radius:8px;border:1px solid #e6e8ef;
+    font-size:15px;background:#fffddf; outline:none; box-sizing:border-box;
+  }
+  .input-highlight{background:#fffddf}
+  .actions{display:flex;align-items:center;justify-content:space-between;margin-top:6px}
+  .link{color:var(--accent);text-decoration:none;font-size:14px}
+  .next-btn{
+    background:var(--accent); color:white; padding:8px 16px;border-radius:8px;border:none;font-weight:700;
+    cursor:pointer;
+  }
+
+  /* info box at bottom */
+  .info-box{
+    margin-top:18px;padding:12px;border-radius:8px;border:1px solid #cfe2ff;background:#eef6ff;color:var(--muted);font-size:13px;
+  }
+
+  /* footer showing fake URL bar (for training) */
+  .fake-url{
+    position:fixed;left:0;right:0;bottom:0;padding:10px 14px;background:rgba(255,255,255,0.95);
+    border-top:1px solid rgba(10,20,40,0.06);display:flex;justify-content:center;align-items:center;
+    gap:8px;font-size:13px;color:var(--muted);
+  }
+  .url-bubble{background:#f3f4f6;padding:8px 12px;border-radius:999px;border:1px solid rgba(10,20,40,0.05)}
+  .note-small{font-size:12px;color:var(--muted)}
+
+  /* dark popup modal (phished) */
+  .backdrop{
+    position:fixed;inset:0;background:rgba(0,0,0,0.45);display:none;align-items:center;justify-content:center;z-index:80;
+  }
+  .phish-modal{
+    width:88%; max-width:420px;background:var(--panel);color:#f8fafc;padding:18px;border-radius:12px;
+    box-shadow:0 26px 80px rgba(2,6,23,0.6);
+  }
+  .phish-modal h2{margin:0 0 8px 0;font-size:18px;display:flex;align-items:center;gap:10px}
+  .phish-modal h2 .emoji{background:#111;padding:6px;border-radius:999px}
+  .phish-modal p{color:#d1d5db;margin:0 0 12px 0;font-size:14px}
+  .cred-list{background:rgba(255,255,255,0.02);padding:12px;border-radius:8px;margin:8px 0}
+  .cred-list b{display:block;color:#fff;margin-bottom:6px}
+  .modal-actions{text-align:right}
+  .modal-close{background:transparent;border:none;color:#7dd3fc;padding:8px 10px;border-radius:8px;font-weight:700;cursor:pointer}
+
+  /* small screens adjustments */
+  @media (max-width:420px){
+    body{padding:6px}
+    .viewport{margin:10px}
+  }
+</style>
+</head>
+<body>
+  <div class="viewport">
+    <div class="container" role="main" aria-label="Phishing awareness demo">
+      <div class="edu-banner" role="note" aria-live="polite">
+        <div style="font-size:20px">⚠️</div>
+        <div>
+          <strong>EDUCATIONAL DEMONSTRATION ONLY</strong>
+          <p>This is a simulated phishing page for cybersecurity training. Do not enter real credentials. The demo blocks submission and does not send data anywhere.</p>
+        </div>
+      </div>
+
+      <div class="brand" aria-hidden="false">
+        <div class="brand-logo">G o o o a</div>
+        <div class="brand-sub">Sign in<br><span style="color:var(--muted);font-size:13px">to continue to Example</span></div>
+      </div>
+
+      <form id="demoForm" autocomplete="off" novalidate>
+        <div class="field">
+          <label for="email">Email or phone</label>
+          <input id="email" class="input-highlight" name="email" type="text" placeholder="someone@example.com" />
+        </div>
+
+        <div class="field">
+          <label for="password">Password</label>
+          <input id="password" class="input-highlight" name="password" type="password" placeholder="Do not use a real password" />
+        </div>
+
+        <div class="actions">
+          <a href="#" class="link" id="forgot">Forgot password?</a>
+          <button type="submit" class="next-btn" id="nextBtn">Next</button>
+        </div>
+
+        <div class="info-box" aria-hidden="false">
+          <strong>Educational Purpose:</strong>
+          <div class="note-small">This page demonstrates how attackers create fake login pages to steal credentials. Always verify the URL and look for security indicators before entering sensitive information.</div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- fake URL bar for demo (teacher can edit the URL text) -->
+  <div class="fake-url" aria-hidden="true">
+    <div class="note-small">Site:</div>
+    <div class="url-bubble" id="fakeSite">hamada-khairi.github.io</div>
+  </div>
+
+  <!-- Modal: you've been phished -->
+  <div class="backdrop" id="backdrop" role="dialog" aria-modal="true" aria-labelledby="phishTitle">
+    <div class="phish-modal" role="document">
+      <h2 id="phishTitle">📛 YOU'VE BEEN PHISHED!</h2>
+      <p>This demo intercepted a simulated submission. Use this to discuss how phishing collects credentials and how to respond safely.</p>
+      <div class="cred-list" id="credList" aria-live="polite">
+        <b>Credentials captured:</b>
+        <div>Email: <span id="showEmail">[none]</span></div>
+        <div>Password: <span id="showPass">[HIDDEN]</span></div>
+      </div>
+      <p style="margin-top:6px;color:#d1d5db;font-size:13px">Always check the URL, verify sender identity, and report suspicious pages to your security team.</p>
+      <div class="modal-actions">
+        <button class="modal-close" id="closeModal">Close</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+  // IMPORTANT: demo never transmits credentials. Use only for training.
+  (function(){
+    const form = document.getElementById('demoForm');
+    const emailInput = document.getElementById('email');
+    const passInput = document.getElementById('password');
+    const backdrop = document.getElementById('backdrop');
+    const showEmail = document.getElementById('showEmail');
+    const showPass = document.getElementById('showPass');
+    const closeModal = document.getElementById('closeModal');
+
+    form.addEventListener('submit', function(ev){
+      ev.preventDefault(); // block real submission
+
+      // capture safe summary only
+      const email = (emailInput.value || '[empty]').trim();
+      // Do NOT store the password; only show masked/hinted text
+      const passMasked = '[HIDDEN]';
+
+      // Clear inputs immediately to avoid leaving sensitive content in memory
+      emailInput.value = '';
+      passInput.value = '';
+
+      // Populate modal (no secrets are logged or sent)
+      showEmail.textContent = email;
+      showPass.textContent = passMasked;
+
+      // Show modal
+      backdrop.style.display = 'flex';
+
+      // Teacher debug: safe console note (no password)
+      console.log('DEMO: simulated capture ->', { emailCaptured: email });
+    });
+
+    // close modal handlers
+    closeModal.addEventListener('click', function(){
+      backdrop.style.display = 'none';
+    });
+    // allow Esc to close
+    document.addEventListener('keydown', function(ev){
+      if(ev.key === 'Escape') backdrop.style.display = 'none';
+    });
+
+    // optional: clicking "Forgot password?" shows the modal too to stress caution
+    document.getElementById('forgot').addEventListener('click', function(e){
+      e.preventDefault();
+      backdrop.style.display = 'flex';
+      showEmail.textContent = '[none]';
+      showPass.textContent = '[HIDDEN]';
+    });
+  })();
+</script>
+</body>
+</html>
